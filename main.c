@@ -2,36 +2,38 @@
 #include <stdlib.h>
 #include "myheader.h"
 struct account_info {
-    char **first_name;
-    char **last_name;
-    char **house_addr;
-    char **phone_no;
+    char *first_name;
+    char *last_name;
+    char *house_addr;
+    char *phone_no;
     int initial_deposit;
 };
 typedef struct account_info account_info;
 int createacc(void) {
     account_info acc;
-    acc.first_name = (char**) malloc(sizeof(char *));
-    acc.last_name = (char**) malloc(sizeof(char *));
-    acc.house_addr =(char**) malloc(sizeof(char *));
-    acc.phone_no = (char**) malloc(sizeof(char *));
-
-    size_t n; 
+    acc.first_name = (char*) malloc(35 *sizeof(char));
+    acc.last_name = (char*) malloc(35* sizeof(char));
+    acc.house_addr =(char*) malloc(100 *sizeof(char));
+    acc.phone_no = (char*) malloc(50 *sizeof(char));
     getchar();
     printf("Enter your first name[35 chars only]: ");
-    //n = 35;
-    getline(acc.first_name, &n, stdin);
+    mygetline(acc.first_name, 35);
     printf("Enter your last name[35 chars only]: ");
-    //n = 35;
-    getline(acc.last_name, &n, stdin);
+    mygetline(acc.last_name, 35);
     printf("Enter your house adderess[100 chars only]: ");
-    //n = 100;
-    getline(acc.house_addr, &n, stdin);
+    mygetline(acc.house_addr, 35);
     printf("Enter your phone number[10 chars only]: ");
-    //n = 10;
-    getline(acc.phone_no, &n, stdin);
-    char totstring[200];
-    sprintf(totstring, "{\"first name\":\"%s\"\n\"last name\":\"%s\"\n\"house address\":\"%s\"\n\"phone number\":\"%s\"}\n",*acc.first_name, *acc.last_name, *acc.house_addr, *acc.phone_no);
+    mygetline(acc.phone_no, 35);
+    do {
+        printf("Enter initial deposit amount [min:500]: ");
+        scanf("%d", &acc.initial_deposit);
+    } while (acc.initial_deposit < 500);
+
+    printf("%s---%s---%s---%s---%d\n", acc.first_name, acc.last_name, acc.phone_no, acc.house_addr, acc.initial_deposit);
+    char *totstring = (char*) malloc(200 * sizeof(char));
+   sprintf(totstring, "{\"first name\":\"%s\",\"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\", \"balance\": %d}",acc.first_name, acc.last_name,acc.house_addr, acc.phone_no, acc.initial_deposit);
+    getchar();
+    printf("%s...\n", totstring);
     db(totstring);
     return 0;
 }
@@ -56,7 +58,10 @@ int main() {
                 "Enter your choice: "
               );
         scanf("%d", &option);
+        switch (option) {
+            case 1:
+                createacc();
+        }
     } while (option != 8);
-    createacc();
     return 0;
 }

@@ -1,5 +1,5 @@
-#include <libmongoc-1.0/mongoc/mongoc.h>
-#include <libbson-1.0/bson.h>
+#include "/usr/include/libbson-1.0/bson.h"
+#include "/usr/include/libmongoc-1.0/mongoc/mongoc.h"
 
 int db(char *strrr) {
     printf("came here");
@@ -20,7 +20,7 @@ int db(char *strrr) {
     // giving out error message is couldn't create uri
     if (!uri) {
         fprintf(stderr, "failed to parse URI :%s\n"
-        "error message: %s\n", uri_string, error);
+        "error message: %s\n", uri_string, error.message);
         return EXIT_FAILURE;
     }
     // creating new client instance client = mongoc_client_new_from_uri(uri); // exiting if failed to create client
@@ -43,14 +43,14 @@ int db(char *strrr) {
       return EXIT_FAILURE;
     }
     if (!mongoc_collection_insert_one(collection, bson, NULL, NULL, &error)) {
-        fprintf(stderr, "error: %s", error);
+        fprintf(stderr, "error: %s", error.message);
     }
     
 
       // bson_destroy (insert);
-    bson_destroy (&reply);
-    bson_destroy (command);
-    bson_free (str);
+    //bson_destroy (&reply);
+    //bson_destroy (command);
+   // bson_free (str);
 
     /*
         * Release our handles and clean up libmongoc
