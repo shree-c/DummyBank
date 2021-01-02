@@ -44,16 +44,7 @@ int db_create(char *strrr) {
     if (!mongoc_collection_insert_one(collection, bson, NULL, NULL, &error)) {
         fprintf(stderr, "error: %s", error.message);
     }
-    
 
-      // bson_destroy (insert);
-    //bson_destroy (&reply);
-    //bson_destroy (command);
-   // bson_free (str);
-
-    /*
-        * Release our handles and clean up libmongoc
-        */
     mongoc_collection_destroy (collection);
     mongoc_database_destroy (database);
     mongoc_uri_destroy (uri);
@@ -74,11 +65,25 @@ int db_find_name(char *name) {
     collection = mongoc_client_get_collection(client, "tesname", "tescoll_name");
     query = bson_new();
     BSON_APPEND_UTF8(query, "first name", name);
+    //taking cursor to that position
     cursor = mongoc_collection_find_with_opts(collection, query, NULL, NULL);
     while(mongoc_cursor_next(cursor, &doc)) {
-        str = bson_as_canonical_extended_json(doc, NULL);
-        printf("results:\n%s\n",str);
-        bson_free(str);
+        // we are iterating over the document
+        bson_iter_t iter;
+        if (bson_iter_init(&iter, doc)) {
+            // here we make decision to print different data formats
+            while (bson_iter_next(&iter)) {
+                if (strcmp(bson_iter_key(&iter), "_id") == 0) {
+                    char oidhold[25];
+                    bson_oid_to_string(bson_iter_oid(&iter), oidhold);
+                    printf (" acc_id : %s\n", oidhold);
+                }
+                else if (strcmp(bson_iter_key(&iter), "balance") == 0)
+                    printf (" %s : %d\n", bson_iter_key(&iter), bson_iter_int32(&iter));
+                else
+                    printf (" %s : %s\n", bson_iter_key(&iter), bson_iter_utf8(&iter, NULL));
+            }
+        }
     }
     bson_destroy(query);
     mongoc_cursor_destroy(cursor);
@@ -88,4 +93,14 @@ int db_find_name(char *name) {
     return 0;
 }
 
+int db_remove(char *name) {
 
+    mongoc_client_t *client;
+    mongoc_collection_t *collection;
+    mongoc_cursor_t *cursor;
+    const bson_t *doc;
+    bson_t *query;
+    char *str;
+    mongoc_init();
+    client = mongoc_client_new("mongodb://localhost:27017/?appname=testingmor");
+    collection = mongoc_client_get_collection(client, "tesname", "tescoll_name");
