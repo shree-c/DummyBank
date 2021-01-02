@@ -1,8 +1,7 @@
 #include "/usr/include/libbson-1.0/bson.h"
 #include "/usr/include/libmongoc-1.0/mongoc/mongoc.h"
 
-int db(char *strrr) {
-    printf("came here");
+int db_create(char *strrr) {
     const char *uri_string = "mongodb://localhost:27017";
     mongoc_uri_t *uri;
     mongoc_client_t *client;
@@ -63,3 +62,30 @@ int db(char *strrr) {
 
        return EXIT_SUCCESS;
 }
+int db_find_name(char *name) {
+    mongoc_client_t *client;
+    mongoc_collection_t *collection;
+    mongoc_cursor_t *cursor;
+    const bson_t *doc;
+    bson_t *query;
+    char *str;
+    mongoc_init();
+    client = mongoc_client_new("mongodb://localhost:27017/?appname=testingmor");
+    collection = mongoc_client_get_collection(client, "tesname", "tescoll_name");
+    query = bson_new();
+    BSON_APPEND_UTF8(query, "first name", name);
+    cursor = mongoc_collection_find_with_opts(collection, query, NULL, NULL);
+    while(mongoc_cursor_next(cursor, &doc)) {
+        str = bson_as_canonical_extended_json(doc, NULL);
+        printf("results:\n%s\n",str);
+        bson_free(str);
+    }
+    bson_destroy(query);
+    mongoc_cursor_destroy(cursor);
+    mongoc_collection_destroy(collection);
+    mongoc_client_destroy(client);
+    mongoc_cleanup();
+    return 0;
+}
+
+

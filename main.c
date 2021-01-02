@@ -34,7 +34,7 @@ int createacc(void) {
    sprintf(totstring, "{\"first name\":\"%s\",\"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\", \"balance\": %d}",acc.first_name, acc.last_name,acc.house_addr, acc.phone_no, acc.initial_deposit);
     getchar();
     printf("%s...\n", totstring);
-    db(totstring);
+    db_create(totstring);
     return 0;
 }
 
@@ -61,6 +61,14 @@ int main() {
         switch (option) {
             case 1:
                 createacc();
+                break;
+            case 4:
+                printf("Enter the name to search: ");
+                char name[35];
+                scanf("%s", name);
+                db_find_name(name);
+                break;
+
         }
     } while (option != 8);
     return 0;
