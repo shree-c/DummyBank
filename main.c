@@ -9,7 +9,42 @@ struct account_info {
     int initial_deposit;
 };
 typedef struct account_info account_info;
-int createacc(void) {
+int transaction(void) {
+    char name[35];
+    int opt, amount;
+    printf("Enter your first name[35 chars only]: ");
+    scanf("%s", name);
+    if (!db_find_name(name)) {
+        do {
+            printf("what do you wanna do?\n");
+            printf("[1]debit\n");
+            printf("[2]credit\n");
+            printf("[3]exit\n:: ");
+            scanf("%d", &opt);
+            switch (opt) {
+                case 1:
+                    printf("Enter the amount you wanna debit[min balance = 500]: ");
+                    scanf("%d", &amount);
+                    db_transact(name, amount, 'd');
+                    break;
+                case 2:
+                    printf("Enter the amount you wanna credit[min balance = 500]: ");
+                    scanf("%d", &amount);
+                    db_transact(name, amount, 'c');
+                    break;
+                default:
+                    printf("unknown option\n");
+                    break;
+            } 
+
+        } while (opt != 3);
+        return EXIT_SUCCESS;
+    } else
+        return EXIT_FAILURE;
+        
+}
+
+int create_new_account(void) {
     account_info acc;
     acc.first_name = (char*) malloc(35 *sizeof(char));
     acc.last_name = (char*) malloc(35* sizeof(char));
@@ -31,7 +66,7 @@ int createacc(void) {
 
     printf("%s---%s---%s---%s---%d\n", acc.first_name, acc.last_name, acc.phone_no, acc.house_addr, acc.initial_deposit);
     char *totstring = (char*) malloc(200 * sizeof(char));
-   sprintf(totstring, "{\"first name\":\"%s\",\"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\", \"balance\": %d}",acc.first_name, acc.last_name,acc.house_addr, acc.phone_no, acc.initial_deposit);
+   sprintf(totstring, "{\"first name\":\"%s\",\"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\",\"balance\": %d}", acc.first_name, acc.last_name, acc.house_addr, acc.phone_no, acc.initial_deposit);
     getchar();
     printf("%s...\n", totstring);
     db_create(totstring);
@@ -39,10 +74,9 @@ int createacc(void) {
 }
 
     
-
-
 int main() {
     int option;
+    char name[35];
     do {
         printf("%s",
                 "\tBANK MANAGEMENT SYSTEM\t\n"
@@ -60,15 +94,23 @@ int main() {
         scanf("%d", &option);
         switch (option) {
             case 1:
-                createacc();
+                create_new_account();
                 break;
             case 4:
                 printf("Enter the name to search: ");
+                scanf("%s", name);
+                db_display(name);
+                break;
+            case 5:
+                printf("Enter the name to search: ");
                 char name[35];
                 scanf("%s", name);
-                db_find_name(name);
+                db_remove(name);
                 break;
-
+            case 3:
+                if (!transaction())
+                    printf("account not found\n");
+                break;
         }
     } while (option != 8);
     return 0;
