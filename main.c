@@ -6,6 +6,7 @@ struct account_info {
     char *last_name;
     char *house_addr;
     char *phone_no;
+    char *password;
     int initial_deposit;
 };
 typedef struct account_info account_info;
@@ -50,6 +51,7 @@ int create_new_account(void) {
     acc.last_name = (char*) malloc(35* sizeof(char));
     acc.house_addr =(char*) malloc(100 *sizeof(char));
     acc.phone_no = (char*) malloc(50 *sizeof(char));
+    acc.password = (char*) malloc(100 *sizeof(char));
     getchar();
     printf("Enter your first name[35 chars only]: ");
     mygetline(acc.first_name, 35);
