@@ -4,3 +4,4 @@ int db_remove(char *);
 int db_transact(char *name, int amount, char);
 int mygetline(char *, int);
 int db_display(char *);
+char *acc_no_gen();

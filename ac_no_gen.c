@@ -1,5 +1,4 @@
 #include <libbson-1.0/bson/bson.h>
-#include <stdio.h>
 #include "/usr/include/libbson-1.0/bson.h"
 #include "/usr/include/libmongoc-1.0/mongoc/mongoc.h"
 
@@ -72,10 +71,10 @@ void update_seed() {
 
 }
 
-int main() {
-    printf("before_seed:%d\n", seed_retriver());
-    printf("account no:%s\n", acc_no_gen());
-    update_seed();
-    printf("updated_seed:%d\n", seed_retriver());
-    return 0;
-}
+//int main() {
+//    printf("before_seed:%d\n", seed_retriver());
+//    printf("account no:%s\n", acc_no_gen());
+//    update_seed();
+//    printf("updated_seed:%d\n", seed_retriver());
+//    return 0;
+//}

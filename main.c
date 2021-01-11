@@ -3,6 +3,7 @@
 #include "myheader.h"
 struct account_info {
     char *first_name;
+    char *acc_no;
     char *last_name;
     char *house_addr;
     char *phone_no;
@@ -68,7 +69,8 @@ int create_new_account(void) {
 
     printf("%s---%s---%s---%s---%d\n", acc.first_name, acc.last_name, acc.phone_no, acc.house_addr, acc.initial_deposit);
     char *totstring = (char*) malloc(200 * sizeof(char));
-   sprintf(totstring, "{\"first name\":\"%s\",\"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\",\"balance\": %d}", acc.first_name, acc.last_name, acc.house_addr, acc.phone_no, acc.initial_deposit);
+    acc.acc_no = acc_no_gen();
+   sprintf(totstring, "{\"first name\":\"%s\",\"acc_no\":\"%s\", \"last name\":\"%s\",\"house address\":\"%s\",\"phone number\":\"%s\",\"balance\": %d}", acc.first_name, acc.acc_no, acc.last_name, acc.house_addr, acc.phone_no, acc.initial_deposit);
     getchar();
     printf("%s...\n", totstring);
     db_create(totstring);
