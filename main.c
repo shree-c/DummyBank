@@ -80,7 +80,7 @@ int create_new_account(void) {
     
 int main() {
     int option;
-    char name[35];
+    char name[35], disopt;
     do {
         printf("%s",
                 "\tBANK MANAGEMENT SYSTEM\t\n"
@@ -99,12 +99,33 @@ int main() {
         switch (option) {
             case 1:
                 create_new_account();
+				update_seed();
                 break;
             case 4:
-                printf("Enter the name to search: ");
-                scanf("%s", name);
-                db_display(name);
-                break;
+				do {
+					printf("What do you want to enter?\n[1]name\n[2]account number\n[3]exit\n:: ");
+					getchar();
+					disopt = getchar();
+					getchar();
+					switch (disopt) {
+						case '1':
+							printf("Enter the name: ");
+							scanf("%s", name);
+							db_display(name, NULL);
+							break;
+						case '2':
+							printf("Enter your account number: ");
+							scanf("%s", name);
+							db_display(NULL, name);
+							break;
+						case '3':
+							break;
+						default:
+							printf("Unknown option\n");
+							break;
+					}
+				} while (disopt != '3');
+				break;
             case 5:
                 printf("Enter the name to search: ");
                 char name[35];

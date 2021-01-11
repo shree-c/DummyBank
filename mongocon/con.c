@@ -179,7 +179,7 @@ int db_transact(char *name, int amount, char tra_type) {
 
  
 
-int db_display(char *name) {
+int db_display(char *name, char *accno) {
     mongoc_client_t *client;
     mongoc_collection_t *collection;
     mongoc_cursor_t *cursor;
@@ -190,7 +190,10 @@ int db_display(char *name) {
     client = mongoc_client_new("mongodb://localhost:27017/?appname=testingmor");
     collection = mongoc_client_get_collection(client, "tesname", "tescoll_name");
     query = bson_new();
-    BSON_APPEND_UTF8 (query, "first name", name);
+	if (name != NULL)
+		BSON_APPEND_UTF8 (query, "first name", name);
+	else
+		BSON_APPEND_UTF8 (query, "acc_no", accno);
     //taking cursor to that position
     cursor = mongoc_collection_find_with_opts(collection, query, NULL, NULL);
     int exists = 0;

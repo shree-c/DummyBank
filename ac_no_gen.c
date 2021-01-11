@@ -54,7 +54,6 @@ void update_seed() {
     query = bson_new();
     BSON_APPEND_INT32(query, "seed", seed);
     seed++;
-    printf("%d\n", seed);
     update = BCON_NEW("$set", "{", "seed", BCON_INT32(seed), "}");
     if (!mongoc_collection_update_one (
           collection, query, update, NULL, NULL, &error)) {
