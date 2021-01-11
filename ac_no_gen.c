@@ -33,7 +33,7 @@ int seed_retriver() {
     mongoc_client_destroy(client);
     mongoc_cleanup();
     return valstored;
-}   
+}
 
 char *acc_no_gen() {
     char *acc_no = (char *) malloc(11 * sizeof(char));
