@@ -1,8 +1,3 @@
 default: final
-
 final:
-	cc main.c  mygetline.c ./mongocon/con.c -I/usr/local/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -lmongoc-1.0 -lbson-1.0	
-
-
-#mon.o:
-	#cc -c ./mongocon/con.c $(pkg-config --libs --cflags libmongoc-1.0)
+	cc ./main.c ./mongocon/con.c ./mygetline.c ./ac_no_gen.c -I/usr/include/libbson-1.0 -I/usr/include/libmongoc-1.0 -lmongoc-1.0 -lbson-1.0

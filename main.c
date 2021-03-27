@@ -99,7 +99,7 @@ int main() {
         switch (option) {
             case 1:
                 create_new_account();
-				update_seed();
+		update_seed();
                 break;
             case 4:
 				do {
